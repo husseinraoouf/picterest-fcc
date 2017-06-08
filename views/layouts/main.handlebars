@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="User Authentication">
+  <meta name="author" content="">
+
+  <title>User Authentication</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <style>
+  /*.btn {
+    margin: 10px 20px 10px 20px;
+    }*/
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    a:hover{
+        color: rgb(2, 117, 216);
+        text-decoration: none;
+    }
+
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .grid-item {
+        text-align: center;
+        width: 200px;
+    }
+
+    .grid-item .main-img p {
+        background-color: #e8e8e8;
+        margin-top: 5px;
+        padding: 5px;
+        font-size: 0.9em;
+        overflow: hidden;
+        color: #444;
+    }
+
+    .grid-item .main-img img {
+        width: 180px;
+    }
+
+    .grid-item .info img {
+        width: 35px;
+    }
+
+    .btn-group-sm > .btn, .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
+    .grid-item .info {
+        background-color: #e8e8e8;
+        margin-top: 5px;
+        padding: 5px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        -webkit-justify-content: space-between;
+        -moz-justify-content: space-between;
+        justify-content: space-between;
+    }
+
+    .open > .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+
+
+    form.add-form {
+        padding: 5px;
+    }
+
+    .grid-item {
+      margin-bottom: 10px;
+    }
+    }
+  </style>
+
+  <script src="https://use.fontawesome.com/4bf2f99749.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script src="/masonry.pkgd.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+
+  </head>
+
+  <body>
+
+
+      <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+              <li>
+                  <a href="/">picterest</a>
+              </li>
+            <li>
+              {{#if user}}
+                    <a href="/">All Pics</a>
+                </li>
+                <li>
+                    <a href="/mypics">My Pics</a>
+                </li>
+
+                <li class="dropdown">
+                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Add Pic
+                        <span class="caret"></span>
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <form class="add-form" >
+                            <input placeholder="Pic url..." class="form-control" type="text">
+                            <input placeholder="Pic description..." class="form-control" type="text">
+                            <button type="submit" class="btn btn-primary btn-block">Send</button>
+                        </form>
+                    </div>
+
+                </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <p class="navbar-text">
+                          <strong>Hi,</strong>
+                          <img src="{{user.avatar}}" width="20" height="20"  onerror="UserImgError(this);>
+                          {{user.displayName}}
+                        </p>
+                    </li>
+
+                    <li>
+                        <a href="/set">Setting</a>
+                    </li>
+                  <li>
+                    <a href="/logout">Log Out</a>
+                  </li>
+                  </ul>
+              {{else}}
+                <a href="/">All</a>
+                </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/signin">Sign In</a>
+                    </li>
+                </ul>
+              {{/if}}
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+
+    {{#if error}}
+      <p class="alert alert-warning">{{error}}</p>
+    {{/if}}
+
+    {{#if success}}
+      <p class="alert alert-success">{{success}}</p>
+    {{/if}}
+
+    {{#if notice}}
+      <p class="alert alert-info">{{notice}}</p>
+    {{/if}}
+
+    <!--where our other templates will insert-->
+    {{{body}}}
+
+    </div> <!-- /container -->
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $(".add-form").submit(function(e){
+            e.preventDefault();
+            img = $('input:first').val();
+            text = $('input:last').val();
+
+            $.ajax({
+                url: '/addPic?img=' + img + "&text=" + text,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $(".grid").prepend('<div class="grid-item" id = "' + data._id + '"> \
+                        <div class="main-img"> \
+                            <img src="' + data.img + '" onerror="imgError(this);"> \
+                            <p>' + data.text + '</p> \
+                        </div> \
+                        <div class="info"> \
+                            <a href="user/' + data.user.name + '"> \
+                                <img src="' + data.user.img + '" title="@' + data.user.name + '" onerror="UserImgError(this);"> \
+                            </a> \
+                            <div class="like btn btn-default btn-sm"> \
+                                <span class="glyphicon glyphicon-star"></span> \
+                                <span class="starcount">' + data.like + '</span> \
+                            </div> \
+                        </div> \
+                    </div>')
+                    // console.log(data);
+                    $grid.masonry('reloadItems');
+                    $grid.masonry('layout');
+
+                    $('input:first').val("");
+                    $('input:last').val("");
+                }
+            });
+
+
+
+
+
+        });
+
+        $('.grid').on("click", ".like", function() {
+            console.log("asd");
+            var par = $(this).parent().parent();
+            console.log(par.prop('id'));
+            $.ajax({
+                url: '/toggelLike?id=' + par.prop('id') +'&likes=' + $(this).children('.starcount').html(),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    $('div#' + par.prop('id') + ' .starcount').html(data.newlikes);
+                  //   $(".grid").prepend(re)
+                    // console.log(data);
+                    // $grid.masonry('reloadItems');
+                    // $grid.masonry('layout');
+                }
+            });
+        });
+    });
+  </script>
+</body>
+</html>

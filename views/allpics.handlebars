@@ -1,0 +1,70 @@
+<div class="container ng-scope">
+    <div class="grid">
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function imgError(image) {
+        image.onerror = "";
+        image.src = "aa.png";
+        $grid.masonry('layout');
+        return true;
+    }
+
+    function UserImgError(image) {
+        image.onerror = "";
+        image.src = "qq.png";
+        return true;
+    }
+
+  $(document).ready(function() {
+
+      $grid = $('.grid').masonry({
+          columnWidth: 220,
+          itemSelector: '.grid-item',
+          horizontalOrder: true,
+          transitionDuration: '0.4s',
+          percentPosition: true
+      });
+
+
+
+      var re = "";
+      $.ajax({
+          url: '/getAllPics',
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+              data.forEach(function(element) {
+                    re += '<div class="grid-item" id = "' + element._id + '"> \
+                                <div class="main-img"> \
+                                    <img src="' + element.img + ' " onerror="imgError(this);" > \
+                                    <p>' + element.text + '</p> \
+                                </div> \
+                                <div class="info"> \
+                                    <a href="user/' + element.user.name + '"> \
+                                        <img src="' + element.user.img + '" title="@' + element.user.name + '" onerror="UserImgError(this);"> \
+                                    </a> \
+                                    <div class="like btn btn-default btn-sm"> \
+                                        <span class="glyphicon glyphicon-star"></span> \
+                                        <span class="starcount">' + element.like + '</span> \
+                                    </div> \
+                                </div> \
+                            </div>'
+              })
+
+              $(".grid").prepend(re)
+              // console.log(data);
+              $grid.masonry('reloadItems');
+              $grid.masonry('layout');
+          }
+      });
+
+      $grid.imagesLoaded().progress( function() {
+          $grid.masonry('layout');
+      });
+  });
+</script>
